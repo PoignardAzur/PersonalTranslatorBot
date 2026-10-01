@@ -1,0 +1,24 @@
+{
+  "name": "personal-translator-bot",
+  "version": "0.1.0",
+  "description": "A translator bot for a private discord server",
+  "homepage": "https://github.com/PoignardAzur/PersonalTranslatorBot#readme",
+  "bugs": {
+    "url": "https://github.com/PoignardAzur/PersonalTranslatorBot/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PoignardAzur/PersonalTranslatorBot.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "discord.js": "^14.27.0",
+    "dotenv": "^18.0.5"
+  }
+}
