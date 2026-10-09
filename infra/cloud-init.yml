@@ -6,9 +6,9 @@ users:
       - ${SSH_PUBLIC_KEY}
 
 packages:
-  - git
+  - curl
   - nodejs
-  - npm
+  - tar
 
 write_files:
   - path: /etc/myapp.env
@@ -21,8 +21,9 @@ write_files:
 
 
 runcmd:
-  - git clone https://github.com/PoignardAzur/PersonalTranslatorBot /opt/app
-  - cd /opt/app && npm ci
+  - mkdir -p /opt/app
+  - curl -fsSL '${app_archive_url}' -o /tmp/app.tar.gz
+  - tar -xzf /tmp/app.tar.gz -C /opt/app
   - |
     cat > /etc/systemd/system/myapp.service <<'EOF'
     [Unit]
