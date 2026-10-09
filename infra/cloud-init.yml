@@ -1,0 +1,42 @@
+#cloud-config
+
+users:
+  - name: root
+    ssh_authorized_keys:
+      - ${SSH_PUBLIC_KEY}
+
+packages:
+  - git
+  - nodejs
+  - npm
+
+write_files:
+  - path: /etc/myapp.env
+    permissions: "0600"
+    content: |
+      DISCORD_BOT_TOKEN = ${DISCORD_BOT_TOKEN}
+      DISCORD_BOT_PREFIX = ${DISCORD_BOT_PREFIX}
+      DISCORD_TEST_PREFIX = ${DISCORD_TEST_PREFIX}
+      SCW_SECRET_KEY = ${SCW_SECRET_KEY}
+
+
+runcmd:
+  - git clone https://github.com/PoignardAzur/PersonalTranslatorBot /opt/app
+  - cd /opt/app && npm ci
+  - |
+    cat > /etc/systemd/system/myapp.service <<'EOF'
+    [Unit]
+    Description=My Node application
+    After=network.target
+
+    [Service]
+    WorkingDirectory=/opt/app
+    EnvironmentFile=/etc/myapp.env
+    ExecStart=/usr/bin/node /opt/app/src/index.js
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
+    EOF
+  - systemctl daemon-reload
+  - systemctl enable --now myapp.service
